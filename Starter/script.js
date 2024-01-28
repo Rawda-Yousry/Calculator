@@ -10,6 +10,7 @@ const toggleDarkThemeWithEnter = (event) => {
 themeElement.addEventListener("keydown", toggleDarkThemeWithEnter);
 themeElement.addEventListener("click", toggleDarkTheme);
 
+// Operations with mouse
 const resultElement = document.querySelector(".calc__result");
 const keyElements = document.querySelectorAll("[data-type]");
 let currentNumber = "";
@@ -100,3 +101,52 @@ const keyElementsHandler = (element) => {
 };
 
 keyElements.forEach(keyElementsHandler);
+
+// Operations with keyboard
+const availableNumbers = [
+  "0",
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
+  ".",
+];
+const availableOperations = ["+", "-", "*", "/"];
+const availableKeys = [
+  ...availableNumbers,
+  ...availableOperations,
+  "Backspace",
+  "Enter",
+  "c",
+];
+const handleClickWithoutHover = (key) => {
+  if (availableNumbers.includes(key)) {
+    numberButtonHandler(key);
+  } else if (availableOperations.includes(key)) {
+    operationButtonHandler(key);
+  } else if (key === "Enter") {
+    executeOperation();
+  } else if (key === "Backspace") {
+    deleteButtonHandler();
+  } else if (key === "c") {
+    resetButtonHandler();
+  }
+};
+
+const handleClickWithHover = (key) => {
+  if (availableKeys.includes(key)) {
+    const element = document.querySelector(`[data-value="${key}"]`);
+    element.classList.add("hover");
+    element.click();
+    setTimeout(() => element.classList.remove("hover"), 100);
+  }
+};
+window.addEventListener("keydown", (event) => {
+  const key = event.key;
+  handleClickWithHover(key);
+});
